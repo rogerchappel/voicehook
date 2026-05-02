@@ -1,0 +1,25 @@
+{
+  "wakePhrases": ["voicehook", "hey crew", "crew command"],
+  "inboxPath": "../tmp/fixture-inbox.md",
+  "transcriptLogPath": "../tmp/transcripts.jsonl",
+  "eventLogPath": "../tmp/events.jsonl",
+  "hooks": [
+    {
+      "id": "capture-inbox",
+      "description": "Capture every wake-phrase command as a local inbox task.",
+      "enabled": true,
+      "requireWake": true,
+      "match": { "type": "always" },
+      "action": "inbox",
+      "template": "- [ ] {{commandText}}\n  - heard: {{timestamp}}\n  - wake: {{wakePhrase}}\n"
+    },
+    {
+      "id": "agent-handoff",
+      "description": "Render agent handoffs to JSON for CrewCmd/OpenClaw capture.",
+      "enabled": true,
+      "requireWake": true,
+      "match": { "type": "includes", "value": "atlas" },
+      "action": "emit-json"
+    }
+  ]
+}

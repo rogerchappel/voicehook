@@ -1,0 +1,3 @@
+Voicehook capture a plain text transcript item
+no wake phrase here
+crew command ask Atlas to prepare a demo
