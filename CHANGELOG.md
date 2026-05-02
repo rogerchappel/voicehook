@@ -1,21 +1,9 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## 0.1.0 - 2026-05-02
 
-This project follows the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-format and uses semantic versioning when versioned releases are published.
-
-## [Unreleased]
-
-### Added
-
-- Initial project setup.
-
-## Release Links
-
-- Unreleased:
-  `https://github.com/rogerchappel/voicehook/compare/...HEAD`
-- Latest release:
-  `https://github.com/rogerchappel/voicehook/releases/latest`
-
-Replace placeholder links once the first release tag exists.
+- Added local transcript ingestion for JSONL and plain text fixtures.
+- Added wake phrase detection and command extraction.
+- Added safe hook routing for inbox markdown, append-only local files, and emitted JSON.
+- Added CLI commands: `init`, `ingest`, `scan`, `hooks`, and `doctor`.
+- Added fixture-backed tests, smoke script, examples, and safety docs.
