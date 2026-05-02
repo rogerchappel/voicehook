@@ -1,0 +1,16 @@
+{
+  "wakePhrases": ["voicehook", "hey crew"],
+  "inboxPath": ".voicehook/inbox.md",
+  "transcriptLogPath": ".voicehook/transcripts.jsonl",
+  "eventLogPath": ".voicehook/events.jsonl",
+  "hooks": [
+    {
+      "id": "capture-inbox",
+      "description": "Default safe inbox capture for every wake command.",
+      "enabled": true,
+      "requireWake": true,
+      "match": { "type": "always" },
+      "action": "inbox"
+    }
+  ]
+}

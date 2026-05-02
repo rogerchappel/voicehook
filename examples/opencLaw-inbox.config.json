@@ -1,0 +1,17 @@
+{
+  "wakePhrases": ["voicehook", "crew command"],
+  "inboxPath": ".voicehook/opencLaw-inbox.md",
+  "transcriptLogPath": ".voicehook/transcripts.jsonl",
+  "eventLogPath": ".voicehook/events.jsonl",
+  "hooks": [
+    {
+      "id": "atlas-capture",
+      "description": "Capture Atlas-prefixed requests for OpenClaw/CrewCmd review.",
+      "enabled": true,
+      "requireWake": true,
+      "match": { "type": "regex", "value": "\\batlas\\b" },
+      "action": "inbox",
+      "template": "- [ ] Atlas: {{commandText}}\n  - heard: {{timestamp}}\n  - transcript: {{transcriptId}}\n"
+    }
+  ]
+}
