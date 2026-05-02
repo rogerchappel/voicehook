@@ -33,10 +33,11 @@
     "cli",
     "local-first",
     "transcript",
-    "opencLaw",
-    "crewmcmd",
+    "openclaw",
+    "crewcmd",
     "automation",
-    "privacy"
+    "privacy",
+    "wake-phrase"
   ],
   "author": "Roger Chappel",
   "license": "MIT",
