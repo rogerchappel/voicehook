@@ -1,58 +1,26 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-Replace this section with the supported versions for `voicehook`.
+`voicehook` is pre-1.0. Security fixes target `main` until tagged releases begin.
 
-Example:
+## Reporting a vulnerability
 
-```md
-| Version | Supported |
-| --- | --- |
-| .x | Yes |
-| < .0 | No |
-```
+Please open a private GitHub security advisory or contact the maintainer with:
 
-If the project does not publish versioned releases yet, say that clearly.
+- the affected version/commit;
+- reproduction steps;
+- expected impact;
+- any suggested fix.
 
-## Reporting a Vulnerability
+## Project safety posture
 
-Please do not report suspected vulnerabilities in public issues, pull requests, or discussions.
+`voicehook` is local-first and privacy-first:
 
-Ask maintainers for the private security reporting path before sharing details.
+- no hidden telemetry;
+- no background daemon install;
+- no credential scraping;
+- no network calls in core runtime;
+- no unrestricted shell execution hook.
 
-If no private reporting path exists yet, ask maintainers through public project channels for a private reporting path. Do not include exploit details, secrets, personal data, or sensitive technical details in public messages.
-
-## What to Include
-
-When a private reporting path is available, include:
-
-- A clear description of the issue.
-- Affected versions, files, packages, workflows, or configuration.
-- Steps to reproduce, proof of concept, or attack scenario when safe to share.
-- Potential impact.
-- Suggested mitigation, if known.
-
-## Response Expectations
-
-Maintainers review good-faith reports as capacity allows.
-
-Do not imply paid support, guaranteed response times, guaranteed fixes, or service-level agreements unless `voicehook` explicitly provides them.
-
-## Scope
-
-In scope:
-
-- Vulnerabilities in voicehook.
-- Insecure default configuration shipped by this project.
-- CI, release, or dependency guidance maintained by this project.
-
-Out of scope:
-
-- General support requests.
-- Requests for guaranteed maintenance timelines.
-- Issues in unrelated downstream projects.
-
-## Disclosure
-
-Coordinate disclosure with maintainers before publishing vulnerability details.
+The intended failure mode is “capture text for review,” not “perform an irreversible action.” Any future integration that can leave the machine must be explicit, opt-in, documented, and testable with safe defaults.
