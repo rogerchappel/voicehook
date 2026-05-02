@@ -4,14 +4,14 @@
   "description": "Local-first safe voice-command hooks for transcripts, inbox capture, and agent workflows.",
   "type": "module",
   "bin": {
-    "voicehook": "./dist/cli.js"
+    "voicehook": "./dist/src/cli.js"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     }
   },
   "files": [
@@ -26,7 +26,7 @@
     "check": "tsc --noEmit",
     "build": "tsc -p tsconfig.json && node scripts/make-cli-executable.mjs",
     "test": "npm run build --silent && node --test dist/test/*.test.js",
-    "smoke": "npm run build --silent && node dist/cli.js ingest --config fixtures/voicehook.config.json --transcript fixtures/transcripts/demo.jsonl --dry-run --json"
+    "smoke": "npm run build --silent && node dist/src/cli.js ingest --config fixtures/voicehook.config.json --transcript fixtures/transcripts/demo.jsonl --dry-run --json"
   },
   "keywords": [
     "voice",
