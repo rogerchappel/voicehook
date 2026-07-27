@@ -39,6 +39,8 @@ Remove `--dry-run` when you want local logs and inbox files written.
 - `voicehook doctor` validates the config.
 
 Every command supports `--json` where automation needs structured output.
+Options are command-specific: unknown or misspelled options exit with an error
+before Voicehook reads a config or transcript or writes operational output.
 
 ## Config shape
 

@@ -10,5 +10,6 @@ Usage:
 Safety:
   - transcript fixtures/files are local inputs
   - commands are rendered to inbox/files/json only
+  - unknown options are rejected before config or transcript processing
   - unrestricted shell execution is intentionally not supported
 `;
