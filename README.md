@@ -62,6 +62,11 @@ before Voicehook reads a config or transcript or writes operational output.
 }
 ```
 
+`wakePhrases` must contain at least one non-empty string. Hook matchers support
+`always`, `includes`, and `regex`; `includes` and `regex` require a non-empty
+`value`, and regex values must be valid JavaScript regular-expression patterns.
+Invalid configuration is rejected by `voicehook doctor` and before ingestion.
+
 Supported hook actions are intentionally constrained:
 
 - `inbox` — append markdown to the configured local inbox;
