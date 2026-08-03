@@ -10,7 +10,8 @@ const matcherTypes = new Set(['includes', 'regex', 'always']);
 export function validateConfig(input: unknown): VoicehookConfig {
   if (!input || typeof input !== 'object') throw new ConfigError('Config must be a JSON object.');
   const value = input as Partial<VoicehookConfig>;
-  if (!Array.isArray(value.wakePhrases) || value.wakePhrases.some((item) => typeof item !== 'string' || item.trim() === '')) {
+  if (!Array.isArray(value.wakePhrases) || value.wakePhrases.length === 0
+    || value.wakePhrases.some((item) => typeof item !== 'string' || item.trim() === '')) {
     throw new ConfigError('Config wakePhrases must be a non-empty string array.');
   }
   for (const key of ['inboxPath', 'transcriptLogPath', 'eventLogPath'] as const) {
@@ -27,6 +28,13 @@ function validateHook(hook: HookDefinition, index: number): void {
   if (!hook.match || !matcherTypes.has(hook.match.type)) throw new ConfigError(`Hook ${hook.id} has an invalid matcher type.`);
   if (hook.match.type !== 'always' && (!hook.match.value || typeof hook.match.value !== 'string')) {
     throw new ConfigError(`Hook ${hook.id} matcher needs a value.`);
+  }
+  if (hook.match.type === 'regex') {
+    try {
+      new RegExp(hook.match.value ?? '');
+    } catch {
+      throw new ConfigError(`Hook ${hook.id} regex matcher has an invalid pattern.`);
+    }
   }
   if (!hookActions.has(hook.action)) throw new ConfigError(`Hook ${hook.id} has an invalid action.`);
   if (hook.action === 'append-file' && !hook.targetPath) throw new ConfigError(`Hook ${hook.id} append-file action needs targetPath.`);
