@@ -65,6 +65,10 @@ before Voicehook reads a config or transcript or writes operational output.
 `wakePhrases` must contain at least one non-empty string. Hook matchers support
 `always`, `includes`, and `regex`; `includes` and `regex` require a non-empty
 `value`, and regex values must be valid JavaScript regular-expression patterns.
+Hook `id` values must be non-empty and unique. When present, `enabled`,
+`requireWake`, and `match.caseSensitive` must be booleans, while `template` and
+`targetPath` must be non-empty strings. The `append-file` action always requires
+`targetPath`.
 Invalid configuration is rejected by `voicehook doctor` and before ingestion.
 
 Supported hook actions are intentionally constrained:
