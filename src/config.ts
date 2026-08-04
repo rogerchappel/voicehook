@@ -18,15 +18,28 @@ export function validateConfig(input: unknown): VoicehookConfig {
     if (typeof value[key] !== 'string' || value[key]?.trim() === '') throw new ConfigError(`Config ${key} must be a path string.`);
   }
   if (!Array.isArray(value.hooks)) throw new ConfigError('Config hooks must be an array.');
-  value.hooks.forEach(validateHook);
+  const hookIds = new Set<string>();
+  value.hooks.forEach((hook, index) => {
+    validateHook(hook, index);
+    if (hookIds.has(hook.id)) throw new ConfigError(`Hook id "${hook.id}" must be unique.`);
+    hookIds.add(hook.id);
+  });
   return value as VoicehookConfig;
 }
 
 function validateHook(hook: HookDefinition, index: number): void {
   if (!hook || typeof hook !== 'object') throw new ConfigError(`Hook ${index} must be an object.`);
-  if (!hook.id || typeof hook.id !== 'string') throw new ConfigError(`Hook ${index} needs a string id.`);
+  if (typeof hook.id !== 'string' || hook.id.trim() === '') throw new ConfigError(`Hook ${index} needs a non-empty string id.`);
+  for (const key of ['enabled', 'requireWake'] as const) {
+    if (hook[key] !== undefined && typeof hook[key] !== 'boolean') {
+      throw new ConfigError(`Hook ${hook.id} ${key} must be a boolean.`);
+    }
+  }
   if (!hook.match || !matcherTypes.has(hook.match.type)) throw new ConfigError(`Hook ${hook.id} has an invalid matcher type.`);
-  if (hook.match.type !== 'always' && (!hook.match.value || typeof hook.match.value !== 'string')) {
+  if (hook.match.caseSensitive !== undefined && typeof hook.match.caseSensitive !== 'boolean') {
+    throw new ConfigError(`Hook ${hook.id} match.caseSensitive must be a boolean.`);
+  }
+  if (hook.match.type !== 'always' && (typeof hook.match.value !== 'string' || hook.match.value.trim() === '')) {
     throw new ConfigError(`Hook ${hook.id} matcher needs a value.`);
   }
   if (hook.match.type === 'regex') {
@@ -37,7 +50,15 @@ function validateHook(hook: HookDefinition, index: number): void {
     }
   }
   if (!hookActions.has(hook.action)) throw new ConfigError(`Hook ${hook.id} has an invalid action.`);
-  if (hook.action === 'append-file' && !hook.targetPath) throw new ConfigError(`Hook ${hook.id} append-file action needs targetPath.`);
+  if (hook.template !== undefined && (typeof hook.template !== 'string' || hook.template.trim() === '')) {
+    throw new ConfigError(`Hook ${hook.id} template must be a non-empty string.`);
+  }
+  if (hook.targetPath !== undefined && (typeof hook.targetPath !== 'string' || hook.targetPath.trim() === '')) {
+    throw new ConfigError(`Hook ${hook.id} targetPath must be a non-empty string.`);
+  }
+  if (hook.action === 'append-file' && hook.targetPath === undefined) {
+    throw new ConfigError(`Hook ${hook.id} append-file action needs targetPath.`);
+  }
 }
 
 export async function loadConfig(configPath: string): Promise<VoicehookConfig> {
