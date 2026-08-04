@@ -46,3 +46,63 @@ test('validateConfig accepts valid matcher configurations', () => {
 
   assert.equal(validateConfig(config), config);
 });
+
+test('validateConfig rejects malformed optional hook fields', () => {
+  const malformedHooks = [
+    { id: 'enabled', enabled: 'yes', match: { type: 'always' }, action: 'inbox' },
+    { id: 'wake', requireWake: 1, match: { type: 'always' }, action: 'inbox' },
+    { id: 'case', match: { type: 'always', caseSensitive: 'no' }, action: 'inbox' },
+    { id: 'template', match: { type: 'always' }, action: 'inbox', template: 42 },
+    { id: 'empty-template', match: { type: 'always' }, action: 'inbox', template: '  ' },
+    { id: 'target', match: { type: 'always' }, action: 'inbox', targetPath: 42 },
+    { id: 'empty-target', match: { type: 'always' }, action: 'inbox', targetPath: '  ' }
+  ];
+
+  for (const hook of malformedHooks) {
+    const config = { ...createDefaultConfig(), hooks: [hook] };
+    assert.throws(
+      () => validateConfig(config),
+      (error: unknown) => error instanceof ConfigError,
+      `expected hook ${hook.id} to be rejected`
+    );
+  }
+});
+
+test('validateConfig rejects malformed append-file target paths', () => {
+  for (const targetPath of [undefined, 42, '  ']) {
+    const config = {
+      ...createDefaultConfig(),
+      hooks: [{ id: 'append', match: { type: 'always' }, action: 'append-file', targetPath }]
+    };
+    assert.throws(
+      () => validateConfig(config),
+      (error: unknown) => error instanceof ConfigError
+    );
+  }
+});
+
+test('validateConfig rejects empty and duplicate hook ids', () => {
+  const emptyIdConfig = {
+    ...createDefaultConfig(),
+    hooks: [{ id: '  ', match: { type: 'always' }, action: 'inbox' }]
+  };
+  assert.throws(() => validateConfig(emptyIdConfig), (error: unknown) => error instanceof ConfigError);
+
+  const duplicateIdConfig = {
+    ...createDefaultConfig(),
+    hooks: [
+      { id: 'same', match: { type: 'always' }, action: 'inbox' },
+      { id: 'same', match: { type: 'always' }, action: 'emit-json' }
+    ]
+  };
+  assert.throws(() => validateConfig(duplicateIdConfig), (error: unknown) => error instanceof ConfigError);
+});
+
+test('validateConfig accepts omitted optional hook fields', () => {
+  const config = {
+    ...createDefaultConfig(),
+    hooks: [{ id: 'minimal', match: { type: 'always' }, action: 'inbox' }]
+  };
+
+  assert.equal(validateConfig(config), config);
+});
