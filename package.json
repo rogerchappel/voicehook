@@ -15,7 +15,7 @@
     }
   },
   "files": [
-    "dist",
+    "dist/src",
     "fixtures",
     "examples",
     "README.md",
@@ -29,7 +29,7 @@
     "build": "tsc -p tsconfig.json && node scripts/make-cli-executable.mjs",
     "test": "npm run build --silent && node --test dist/test/*.test.js",
     "smoke": "npm run build --silent && node dist/src/cli.js ingest --config fixtures/voicehook.config.json --transcript fixtures/transcripts/demo.jsonl --dry-run --json",
-    "package:smoke": "npm pack --dry-run",
+    "package:smoke": "node scripts/assert-package-surface.mjs",
     "release:check": "npm run check && npm test && npm run smoke && npm run package:smoke"
   },
   "keywords": [
