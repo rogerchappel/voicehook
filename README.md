@@ -6,6 +6,15 @@ Local-first safe voice-command hooks for transcript files, wake phrases, and age
 
 ## Install
 
+Install the published CLI from npm:
+
+```bash
+npm install --global voicehook
+voicehook help
+```
+
+To develop from a checkout instead:
+
 ```bash
 npm install
 npm run build
@@ -107,5 +116,14 @@ npm run build
 npm run smoke
 bash scripts/validate.sh
 ```
+
+## Releases
+
+Pushing a version tag runs the complete release check, publishes `voicehook` to
+npm with provenance through trusted publishing, and attaches the verified
+tarball to the matching GitHub release. A GitHub release created without that
+tag workflow does not publish to npm; consumers can install a version with
+`npm install --global voicehook@<version>` only after the npm publication step
+succeeds.
 
 See `docs/SAFETY.md` and `docs/ADAPTERS.md` for the safety model and microphone adapter boundary.
