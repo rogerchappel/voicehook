@@ -2,7 +2,11 @@
 
 ## Unreleased
 
+## 0.1.1 - 2026-08-17
+
 - Excluded compiled test artifacts from the published npm package and added package-surface verification.
+- Added trusted npm publishing with provenance for new version tags.
+- Corrected installation guidance while the package is unpublished and added an installed-package documentation smoke check.
 
 ## 0.1.0 - 2026-05-02
 

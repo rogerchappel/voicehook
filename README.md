@@ -6,14 +6,19 @@ Local-first safe voice-command hooks for transcript files, wake phrases, and age
 
 ## Install
 
-Install the published CLI from npm:
+The `voicehook` package is not published to npm yet. Until a registry version is
+available, install the CLI from a source checkout:
 
 ```bash
-npm install --global voicehook
+git clone https://github.com/rogerchappel/voicehook.git
+cd voicehook
+npm ci
+npm run build
+npm install --global .
 voicehook help
 ```
 
-To develop from a checkout instead:
+To develop without installing globally:
 
 ```bash
 npm install
@@ -114,12 +119,14 @@ npm test
 npm run check
 npm run build
 npm run smoke
+npm run install:smoke
 bash scripts/validate.sh
 ```
 
 ## Releases
 
-Pushing a version tag runs the complete release check, publishes `voicehook` to
+No `voicehook` version is currently available from the npm registry. Pushing a
+new version tag runs the complete release check, publishes `voicehook` to
 npm with provenance through trusted publishing, and attaches the verified
 tarball to the matching GitHub release. A GitHub release created without that
 tag workflow does not publish to npm; consumers can install a version with
