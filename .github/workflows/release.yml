@@ -33,6 +33,8 @@ jobs:
       - run: npm ci
       - run: node /tmp/releasebox/bin/releasebox.js check .
       - run: npm run release:check
+      - name: Publish package to npm
+        run: npm publish --provenance
       - run: npm pack
       - name: Generate release notes
         run: |
