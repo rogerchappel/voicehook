@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { appendJsonl, appendText } from './logs.js';
 import { matchingHooks, renderHook } from './hooks.js';
-import { resolveFrom } from './paths.js';
+import { resolveFromFile } from './paths.js';
 import { commandTextFor } from './wake.js';
 import type { HookResult, IngestOptions, IngestResult, TranscriptEntry, VoicehookConfig, VoicehookEvent } from './models.js';
 
@@ -37,8 +37,8 @@ export async function ingestEntries(
   }
   const wrote: string[] = [];
   if (!options.dryRun) {
-    const transcriptLog = resolveFrom(configPath, config.transcriptLogPath);
-    const eventLog = resolveFrom(configPath, config.eventLogPath);
+    const transcriptLog = resolveFromFile(configPath, config.transcriptLogPath);
+    const eventLog = resolveFromFile(configPath, config.eventLogPath);
     await appendJsonl(transcriptLog, entries);
     await appendJsonl(eventLog, events);
     wrote.push(transcriptLog, eventLog);
@@ -54,5 +54,5 @@ export async function ingestEntries(
 }
 
 function targetFor(result: HookResult, config: VoicehookConfig, configPath: string): string {
-  return resolveFrom(configPath, result.targetPath ?? config.inboxPath);
+  return resolveFromFile(configPath, result.targetPath ?? config.inboxPath);
 }
