@@ -84,6 +84,9 @@ Hook `id` values must be non-empty and unique. When present, `enabled`,
 `targetPath` must be non-empty strings. The `append-file` action always requires
 `targetPath`.
 Invalid configuration is rejected by `voicehook doctor` and before ingestion.
+Relative `inboxPath`, `transcriptLogPath`, `eventLogPath`, and hook `targetPath`
+values are resolved from the directory containing the config file, regardless
+of the config filename or extension. Absolute paths are used unchanged.
 
 Supported hook actions are intentionally constrained:
 

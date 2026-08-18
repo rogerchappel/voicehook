@@ -18,6 +18,10 @@ Reads transcript entries, matches wake phrases, renders hooks, and writes local 
 voicehook ingest --config voicehook.config.json --transcript transcript.jsonl --json
 ```
 
+All relative output paths in the loaded config are based on the config file's
+parent directory. This also applies when the config filename is extensionless
+or does not end in `.json`; absolute output paths remain unchanged.
+
 ## `voicehook scan`
 
 Dry-run alias for inspecting matched commands before writing files.
