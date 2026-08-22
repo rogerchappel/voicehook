@@ -13,6 +13,18 @@ test('ingestEntries dry-run renders inbox without writing files', async () => {
   assert.deepEqual(result.wrote, []);
 });
 
+test('ingestEntries does not render a hook for an empty wake command', async () => {
+  const config = createDefaultConfig();
+  const result = await ingestEntries(
+    [{ id: 't', text: 'Voicehook: ', timestamp: '2026-01-01T00:00:00.000Z' }],
+    config,
+    join(process.cwd(), 'voicehook.config.json'),
+    { dryRun: true }
+  );
+  assert.deepEqual(result.events, []);
+  assert.deepEqual(result.hookResults, []);
+});
+
 test('ingestEntries appends local inbox and logs', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'voicehook-'));
   try {
