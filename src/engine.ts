@@ -18,6 +18,7 @@ export function buildEvents(entries: TranscriptEntry[], config: VoicehookConfig,
         commandText: command.commandText,
         matchedHookIds: []
       };
+      if (command.wake && command.commandText === '') return event;
       event.matchedHookIds = matchingHooks(config.hooks, event).map((hook) => hook.id);
       return event;
     })
