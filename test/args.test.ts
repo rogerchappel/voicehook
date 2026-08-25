@@ -29,3 +29,31 @@ test('parseArgs enforces boolean and valued option forms', () => {
   assert.throws(() => parseArgs(['ingest', '--config']), /--config requires a value/);
   assert.throws(() => parseArgs(['ingest', '--transcript=']), /--transcript requires a value/);
 });
+
+test('parseArgs enforces commands without positional arguments', () => {
+  for (const command of ['help', 'init', 'hooks', 'doctor']) {
+    assert.throws(
+      () => parseArgs([command, 'unexpected']),
+      new RegExp(`${command} does not accept positional arguments`),
+    );
+  }
+});
+
+test('parseArgs accepts exactly one transcript source for ingest and scan', () => {
+  for (const command of ['ingest', 'scan']) {
+    assert.equal(parseArgs([command, 'transcript.jsonl']).positionals[0], 'transcript.jsonl');
+    assert.equal(parseArgs([command, '--transcript', 'transcript.jsonl']).flags.transcript, 'transcript.jsonl');
+    assert.throws(
+      () => parseArgs([command]),
+      new RegExp(`${command} requires one transcript file`),
+    );
+    assert.throws(
+      () => parseArgs([command, 'one.jsonl', 'two.jsonl']),
+      new RegExp(`${command} accepts exactly one transcript file`),
+    );
+    assert.throws(
+      () => parseArgs([command, 'one.jsonl', '--transcript', 'two.jsonl']),
+      new RegExp(`${command} transcript must be supplied either positionally or with --transcript, not both`),
+    );
+  }
+});
