@@ -56,7 +56,42 @@ export function parseArgs(argv: string[]): ParsedArgs {
       throw new VoicehookError(`Option --${rawKey} requires a value.`, 'ARGS_ERROR');
     }
   }
+  validatePositionals(command, flags, positionals);
   return { command, flags, positionals };
+}
+
+function validatePositionals(
+  command: string,
+  flags: Record<string, string | boolean>,
+  positionals: string[],
+): void {
+  if (command === 'ingest' || command === 'scan') {
+    if (positionals.length > 1) {
+      throw new VoicehookError(
+        `${command} accepts exactly one transcript file; received ${positionals.length} positional arguments.`,
+        'ARGS_ERROR',
+      );
+    }
+    if (positionals.length === 1 && typeof flags.transcript === 'string') {
+      throw new VoicehookError(
+        `${command} transcript must be supplied either positionally or with --transcript, not both.`,
+        'ARGS_ERROR',
+      );
+    }
+    if (flags.help !== true && positionals.length === 0 && typeof flags.transcript !== 'string') {
+      throw new VoicehookError(
+        `${command} requires one transcript file, supplied positionally or with --transcript.`,
+        'ARGS_ERROR',
+      );
+    }
+    return;
+  }
+  if (positionals.length > 0) {
+    throw new VoicehookError(
+      `${command} does not accept positional arguments: ${positionals.join(' ')}`,
+      'ARGS_ERROR',
+    );
+  }
 }
 
 export function stringFlag(flags: Record<string, string | boolean>, name: string): string | undefined {
